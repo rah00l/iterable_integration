@@ -17,6 +17,10 @@ Rails.application.configure do
   # Enable server timing
   config.server_timing = true
 
+  config.after_initialize do
+    config.iterable_api_key = 'fake_development_api_key'
+    config.middleware.insert_before(ActionDispatch::Static, FakeIterableApi)
+  end
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join("tmp/caching-dev.txt").exist?

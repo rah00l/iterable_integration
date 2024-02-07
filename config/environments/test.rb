@@ -22,6 +22,10 @@ Rails.application.configure do
     "Cache-Control" => "public, max-age=#{1.hour.to_i}"
   }
 
+  config.after_initialize do
+    config.iterable_api_key = 'fake_development_api_key'
+    config.middleware.insert_before(ActionDispatch::Static, FakeIterableApi)
+  end
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
