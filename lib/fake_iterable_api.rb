@@ -1,10 +1,19 @@
 class FakeIterableApi
-  def self.call(env)
-    # Implement logic to handle Iterable API requests and return fake responses
-    status = 200
-    headers = { 'Content-Type' => 'application/json' }
-    body = '{"message": "Fake Iterable API response"}'  # Return body as a String
+	def initialize(app)
+	  @app = app
+	end
 
-    [status, headers, [body]]  # Return as array with body as a string
+  def call(env)
+    
+  	if env['PATH_INFO'] == '/api/events/track'
+	    # Implement logic to handle Iterable API requests and return fake responses
+	    status = 200
+	    headers = { 'Content-Type' => 'application/json' }
+	    body = { success: true, message: 'Event tracked successfully' }.to_json
+
+	    [status, headers, [body]]  # Return as array with body as a string
+	  else
+	  	@app.call(env)
+	  end
   end
 end
