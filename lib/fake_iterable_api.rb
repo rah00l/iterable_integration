@@ -32,6 +32,9 @@ class FakeIterableApi
 	    elsif event_name == 'Event B'
 	      # Logic for handling Event B and sending email notification
 	      track_event(request)
+	    else
+	    	# Return an error response for unrecognized events
+	    	invalid_event_response
 	    end
 	  else
 	  	@app.call(env)
@@ -42,8 +45,8 @@ class FakeIterableApi
 
   def track_event(request)
   	event_name = request.params['eventName']
-  	
-    if valid_api_key?(request) && required_parameters_present?(request)
+
+		if valid_api_key?(request) && required_parameters_present?(request)
       # Sample response for 200 OK
       success_response(event_name)
     elsif !valid_api_key?(request)
@@ -101,6 +104,20 @@ class FakeIterableApi
     }
 
     [status, headers, [invalid_parameters_response.to_json]]  # Return as array with body as a string
+  end
+
+  def invalid_event_response
+    status = 400
+    headers = { 'Content-Type' => 'application/json' }
+		
+		# Sample response for 400 Bad Request (Invalid event name)
+    invalid_event_response = {
+      "msg": "Invalid event name",
+      "code": "InvalidEventName",
+      "params": {}
+    }
+
+    [status, headers, [invalid_event_response.to_json]]  # Return as array with body as a string
   end
 
   def required_parameters_present?(request)
