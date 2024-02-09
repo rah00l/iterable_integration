@@ -28,10 +28,10 @@ class FakeIterableApi
 
 	    if event_name == 'Event A'
 	      # Logic for handling Event A
-	      track_event_a(request)
+	      track_event(request)
 	    elsif event_name == 'Event B'
 	      # Logic for handling Event B and sending email notification
-	      track_event_b_and_send_notification
+	      track_event(request)
 	    end
 	  else
 	  	@app.call(env)
@@ -40,10 +40,12 @@ class FakeIterableApi
 
   private
 
-  def track_event_a(request)
+  def track_event(request)
+  	event_name = request.params['eventName']
+  	
     if valid_api_key?(request) && required_parameters_present?(request)
       # Sample response for 200 OK
-      success_response
+      success_response(event_name)
     elsif !valid_api_key?(request)
       # Sample response for 401 Unauthorized (Invalid API Key)
       unauthorized_response
@@ -59,13 +61,13 @@ class FakeIterableApi
     !request.params['apiKey'].nil? && request.params['apiKey'] == 'valid_api_key'
   end
 
-  def success_response
+  def success_response(event_name)
     status = 200
     headers = { 'Content-Type' => 'application/json' }
 
     # Sample response for 200 OK
     success_response = {
-      "msg": "Event A tracked successfully",
+      "msg": "#{event_name} tracked successfully",
       "code": "Success",
       "params": {}
     }
