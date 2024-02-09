@@ -8,14 +8,25 @@ describe FakeIterableApi do
   include Rack::Test::Methods
 
   def app
-    # Instantiate an instance of FakeIterableApi and pass it to Rack::Lint
     FakeIterableApi.new(lambda { |env| [200, {}, [""]] })
   end
 
-  it 'returns a fake response for Event A' do
-    env = { 'CONTENT_TYPE' => 'application/json', 'rack.session' => { 'HTTP_COOKIE' => 'cookie_name=cookie_value' } }
-    post '/api/events/track', { eventName: 'Event A', userId: '123' }.to_json, env
+  it 'returns a fake response for Event A - Valid 200' do
+    env = { 'CONTENT_TYPE' => 'application/json' }
+    post '/api/events/track', { eventName: 'Event A', userId: '123', "email": "user@example.com", apiKey: 'valid_api_key' }.to_json, env
 
+    expect(last_response.status).to eq(200)
+    expect(last_response.headers['Content-Type']).to eq('application/json')
+    expect(JSON.parse(last_response.body)).to eq({
+      "msg" => "Event A tracked successfully",
+      "code" => "Success",
+      "params" => {}
+    })
+  end
+
+  it 'returns a fake response for Event B - Valid 200' do
+    env = { 'CONTENT_TYPE' => 'application/json' }
+    post '/api/events/track', { eventName: 'Event B', userId: '123', "email": "user@example.com", apiKey: 'valid_api_key' }.to_json, env
 
     expect(last_response.status).to eq(200)
     expect(last_response.headers['Content-Type']).to eq('application/json')

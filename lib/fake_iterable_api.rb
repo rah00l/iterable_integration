@@ -73,7 +73,6 @@ class FakeIterableApi
     elsif !valid_api_key?(request)
       # Sample response for 401 Unauthorized (Invalid API Key)
       unauthorized_response
-      send_email_notification(valid_request: false) if event_name == 'Event B'
     else
       # Sample response for 400 Bad Request (Invalid Parameters)
       invalid_parameters_response
