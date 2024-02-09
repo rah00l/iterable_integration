@@ -31,7 +31,28 @@ class FakeIterableApi
 	      track_event(request)
 	    elsif event_name == 'Event B'
 	      # Logic for handling Event B and sending email notification
-	      track_event(request)
+	      event_response = track_event(request)
+
+	      email_response = if event_response[0] == 200
+	        # Logic for handling Event B and sending email notification
+	        send_email_notification
+	      else
+	      	send_email_notification(valid_request: false)
+	      end
+
+	      # Extract the "msg" part from the email response
+	      email_msg = email_response.chomp('"').reverse.chomp('"').reverse # Remove surrounding quotes if present
+
+	      # Extract the existing "msg" part from the event response body
+	      event_msg = JSON.parse(event_response[2].first)["msg"]
+
+	      # Merge the messages by appending them with a separator
+	      merged_msg = "#{event_msg} - #{email_msg}"
+
+	      # Update the "msg" part in the event response body with the merged message
+	      event_response[2].first.gsub!(/"msg":"[^"]+"/, "\"msg\":\"#{merged_msg}\"")
+
+	      event_response
 	    else
 	    	# Return an error response for unrecognized events
 	    	invalid_event_response
@@ -52,6 +73,7 @@ class FakeIterableApi
     elsif !valid_api_key?(request)
       # Sample response for 401 Unauthorized (Invalid API Key)
       unauthorized_response
+      send_email_notification(valid_request: false) if event_name == 'Event B'
     else
       # Sample response for 400 Bad Request (Invalid Parameters)
       invalid_parameters_response
@@ -125,27 +147,7 @@ class FakeIterableApi
     request.params.include?('email') && request.params.include?('userId')
   end
 
-  def track_event_b_and_send_notification
-  	# Logic for tracking Event B
-  	status = 200
-  	headers = { 'Content-Type' => 'application/json' }
-  	body = {
-  	  "msg": "Success",
-  	  "code": 200,
-  	  "params": {
-  	    "successCount": 1,
-  	    "failureCount": 0
-  	  }
-  	}.to_json
-
-  	# Logic for sending email notification via Iterable API
-  	# Assuming the correct endpoint is '/api/email/target'
-  	send_email_notification
-
-  	[status, headers, [body]]  # Return as array with body as a string
-  end
-
-  def send_email_notification
+  def send_email_notification(valid_request: true)
   	# Logic for sending email notification via Iterable API
   	# https://api.iterable.com/api/docs#email_target
   	# Send an email to an email address
@@ -171,17 +173,23 @@ class FakeIterableApi
 		  
 		  # Make the request
 		  response = http.request(request)
-		  
-		  # Mock the response (replace this with actual response parsing logic if needed)
-		  response_body = {
-		    msg: 'Email sent successfully',
-		    code: 200,
-		    params: {
-		      emailId: 'user@example.com',
-		      messageId: 'unique_message_id'
+
+		  if valid_request
+		    # Mock successful response for valid request
+		    response_body = {
+		      "msg" => 'Email sent successfully',
+		      "code" => "Success",
+		      "params" => {}
 		    }
-		  }.to_json
-		  
-		  response_body # Return the response body
+		  else
+		    # Mock failure response for invalid request
+		    response_body = {
+		      "msg" =>'Failed to send email',
+		      "code" => "Failed",
+		      "params" => {}
+		    }
+		  end
+
+		  response_body["msg"].to_json # Return the response body
   end
 end
