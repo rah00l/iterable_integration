@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require_relative '../lib/fake_iterable_api'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -11,7 +12,8 @@ module IterableIntegration
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
-    config.middleware.use 'FakeIterableApi'
+    # Add the middleware to the middleware stack
+    config.middleware.use FakeIterableApi
 
     # Configuration for the application, engines, and railties goes here.
     #
