@@ -9,9 +9,12 @@ class FakeIterableApi
 	end
 
   def call(env)
+  	 puts "Received request: #{env['REQUEST_METHOD']} #{env['PATH_INFO']}" # Log incoming request
+
   	if env['PATH_INFO'] == '/api/events/track'
 	    # Implement logic to handle Iterable API requests and return fake responses
 	    request = Rack::Request.new(env)
+		  puts "Request body: #{request.body.read}" # Log request body
 
 	    # Check if the request content type is JSON
 	    if request.content_type == 'application/json'
@@ -24,6 +27,7 @@ class FakeIterableApi
       	# Update the request parameters with the parsed JSON data
       	request.params.merge!(body)
 	    end	
+
 	    event_name = request.params['eventName']
 
 	    if event_name == 'Event A'
@@ -66,7 +70,6 @@ class FakeIterableApi
 
   def track_event(request)
   	event_name = request.params['eventName']
-
 		if valid_api_key?(request) && required_parameters_present?(request)
       # Sample response for 200 OK
       success_response(event_name)
