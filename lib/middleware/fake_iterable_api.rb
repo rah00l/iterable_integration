@@ -94,7 +94,7 @@ class FakeIterableApi
 
     # Sample response for 200 OK
     success_response = {
-      "msg": "#{event_name} tracked successfully",
+      "msg": "#{event_name} tracked successfully!",
       "code": "Success",
       "params": {}
     }
@@ -108,7 +108,7 @@ class FakeIterableApi
 
     # Sample response for 401 Unauthorized (Invalid API Key)
     unauthorized_response = {
-      "msg": "Invalid API key",
+      "msg": "Invalid API Key",
       "code": "BadApiKey",
       "params": {}
     }
@@ -122,7 +122,7 @@ class FakeIterableApi
 
     # Sample response for 400 Bad Request (Invalid Parameters)
     invalid_parameters_response = {
-      "msg": "Invalid parameters",
+      "msg": "Invalid Parameters",
       "code": "InvalidParameters",
       "params": {}
     }
@@ -136,7 +136,7 @@ class FakeIterableApi
 		
 		# Sample response for 400 Bad Request (Invalid event name)
     invalid_event_response = {
-      "msg": "Invalid event name",
+      "msg": "Invalid Event Name",
       "code": "InvalidEventName",
       "params": {}
     }
@@ -179,14 +179,14 @@ class FakeIterableApi
 		  if valid_request
 		    # Mock successful response for valid request
 		    response_body = {
-		      "msg" => 'Email sent successfully',
+		      "msg" => 'Email sent successfully!',
 		      "code" => "Success",
 		      "params" => {}
 		    }
 		  else
 		    # Mock failure response for invalid request
 		    response_body = {
-		      "msg" =>'Failed to send email',
+		      "msg" =>'Failed to Send Email!',
 		      "code" => "Failed",
 		      "params" => {}
 		    }

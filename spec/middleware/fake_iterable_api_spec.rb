@@ -1,5 +1,5 @@
 require 'rack/test'
-require 'fake_iterable_api'
+require_relative '../../lib/middleware/fake_iterable_api'
 require 'json'
 
 describe FakeIterableApi do
@@ -16,7 +16,7 @@ describe FakeIterableApi do
     expect(last_response.status).to eq(200)
     expect(last_response.headers['Content-Type']).to eq('application/json')
     expect(JSON.parse(last_response.body)).to eq({
-      "msg" => "Event A tracked successfully",
+      "msg" => "Event A tracked successfully!",
       "code" => "Success",
       "params" => {}
     })
@@ -29,7 +29,7 @@ describe FakeIterableApi do
     expect(last_response.status).to eq(200)
     expect(last_response.headers['Content-Type']).to eq('application/json')
     expect(JSON.parse(last_response.body)).to eq({
-      "msg" => "Event B tracked successfully - Email sent successfully",
+      "msg" => "Event B tracked successfully! - Email sent successfully!",
       "code" => "Success",
       "params" => {}
     })
@@ -42,7 +42,7 @@ describe FakeIterableApi do
     expect(last_response.status).to eq(400)
     expect(last_response.headers['Content-Type']).to eq('application/json')
     expect(JSON.parse(last_response.body)).to eq({
-      "msg" => "Invalid parameters",
+      "msg" => "Invalid Parameters",
       "code" => "InvalidParameters",
       "params" => {}
     })
@@ -55,7 +55,7 @@ describe FakeIterableApi do
     expect(last_response.status).to eq(400)
     expect(last_response.headers['Content-Type']).to eq('application/json')
     expect(JSON.parse(last_response.body)).to eq({
-      "msg" => "Invalid parameters - Failed to send email",
+      "msg" => "Invalid Parameters - Failed to Send Email!",
       "code" => "InvalidParameters",
       "params" => {}
     })
@@ -68,7 +68,7 @@ describe FakeIterableApi do
     expect(last_response.status).to eq(400)
     expect(last_response.headers['Content-Type']).to eq('application/json')
     expect(JSON.parse(last_response.body)).to eq({
-      "msg" => "Invalid event name",
+      "msg" => "Invalid Event Name",
       "code" => "InvalidEventName",
       "params" => {}
     })
@@ -81,7 +81,7 @@ describe FakeIterableApi do
     expect(last_response.status).to eq(401)
     expect(last_response.headers['Content-Type']).to eq('application/json')
     expect(JSON.parse(last_response.body)).to eq({
-      "msg" => "Invalid API key",
+      "msg" => "Invalid API Key",
       "code" => "BadApiKey",
       "params" => {}
     })
@@ -94,7 +94,7 @@ describe FakeIterableApi do
     expect(last_response.status).to eq(401)
     expect(last_response.headers['Content-Type']).to eq('application/json')
     expect(JSON.parse(last_response.body)).to eq({
-      "msg" => "Invalid API key - Failed to send email",
+      "msg" => "Invalid API Key - Failed to Send Email!",
       "code" => "BadApiKey",
       "params" => {}
     })
