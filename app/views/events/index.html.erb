@@ -6,18 +6,106 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style type="text/css">
+  /* Center align the title */
+    h1 {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      font-size: 36px;
+      margin-top: 50px;
+    }
+
+    /* Center align the content */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+    }
+
+    /* Style the buttons */
+    #buttonContainer {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    button {
+      padding: 20px 40px; /* Increase padding for larger buttons */
+      margin: 10px;
+      font-size: 20px; /* Decrease font size slightly */
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #status-bar {
+      position: fixed;
+      top: 0; /* Adjust this value for top or bottom positioning */
+      width: 100%;
+      background-color: #333; /* Adjust color as needed */
+      color: white;
+      text-align: center;
+      padding: 10px;
+      z-index: 9999; /* Ensure it appears on top of other elements */
+    }
+
+    .success {
+      background-color: #28a745 !important; /* Green color for success messages */
+    }
+
+    .error {
+      background-color: #dc3545 !important; /* Red color for error messages */
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+
 </head>
 <body>
 
-<h1>Event Tracking</h1>
+<h1>Event Trigger and Email Notification System</h1>
 
-<button id="trackEventA">Track Event A</button>
-<button id="trackEventB">Track Event B</button>
+<div id="guideline">
+  <p>Please click on one of the buttons below to trigger the corresponding event.</p>
+</div>
 
-<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+<div id="buttonContainer">
+  <button id="trackEventA">Track Event A</button>
+  <button id="trackEventB">Track Event B</button>
+</div>
+
+<div id="status-bar" class="hidden"></div>
+
+
+
 <script>
   // jQuery code for handling button clicks and making AJAX requests
   $(document).ready(function() {
+
+    function showStatusMessage(message, isSuccess) {
+      const statusBar = $('#status-bar');
+      statusBar.text(message);
+      statusBar.toggleClass('success', isSuccess);
+      statusBar.toggleClass('error', !isSuccess);
+      statusBar.removeClass('hidden');
+
+      // Automatically hide the status bar after 3 seconds
+      setTimeout(function() {
+        statusBar.addClass('hidden');
+      }, 3000);
+    }
+
     $('#trackEventA').click(function() {
       trackEvent('Event A');
     });
@@ -31,14 +119,15 @@
         url: '/api/events/track',
         method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ eventName: eventName, "email": "user@example.com", "userId": "123", "apiKey": "valid_api_key" }),
+        data: JSON.stringify({ eventName: 'eventName', "email": "user@example.com", "userId": "123", "apiKey": "valid_api_key" }),
                           // "eventName": "Event A", "email": "user@example.com", "userId": "123", "apiKey": "valid_api_key"
         success: function(response) {
             // Valid - 200
             // Reference curl parameters:
             // curl -X POST -H "Content-Type: application/json" -d '{"eventName": "Event A", "email": "user@example.com", "userId": "123", "apiKey": "valid_api_key"}' http://localhost:3000/api/events/track
             // {"msg":"Event A tracked successfully","code":"Success","params":{}}
-            alert(response['msg']); // Show success message
+            // alert(response['msg']); // Show success message
+            showStatusMessage(response['msg'], true);
           },
          // error: function(xhr, status, error) {
          //   alert(`Error : ${xhr.status} - ` + xhr.responseJSON.msg); // Show error message
@@ -49,13 +138,15 @@
             // Reference curl parameters:
             // curl -X POST -H "Content-Type: application/json" -d '{"eventName": "Event A", "userId": "123", "apiKey": "valid_api_key"}' http://localhost:3000/api/events/track
             // {"msg":"Invalid parameters","code":"InvalidParameters","params":{}}
-            alert(xhr.responseJSON.msg); // Show error message for invalid parameters
+            // alert(xhr.responseJSON.msg); // Show error message for invalid parameters
+            showStatusMessage(xhr.responseJSON.msg, false);
           } else if (xhr.status == 401) {
             // Invalid API Key - 401
             // Reference curl parameters:
             // curl -X POST -H "Content-Type: application/json" -d '{"eventName": "Event A", "email": "user@example.com", "userId": "123", "apiKey": "invalid_api_key"}' http://localhost:3000/api/events/track
             // {"msg":"Invalid API key","code":"BadApiKey","params":{}}
-            alert(xhr.responseJSON.msg); // Show error message for invalid API key
+            // alert(xhr.responseJSON.msg); // Show error message for invalid API key
+            showStatusMessage(xhr.responseJSON.msg, false);
           } else {
             // Other error statuses
             alert('Error: ' + error); // Show generic error message
