@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Iterable API Mock Documentation
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-Iterable+API+Mock">Iterable API Mock</h1>
+
+<p>This application serves as a mock for the Iterable API, allowing developers to simulate interactions with the Iterable platform without making actual requests to the Iterable servers.</p>
+
+<h2 id="label-Usage">Usage</h2>
+
+<h3 id="label-Setting+Up+the+Application">Setting Up the Application</h3>
+<ol><li>
+<p>Clone the repository to your local machine:</p>
+</li></ol>
+
+<p><code>   git clone https://github.com/rah00l/iterable_integration.git </code></p>
+<ol><li>
+<p>Install dependencies:</p>
+</li></ol>
+
+<p><code>   bundle install </code></p>
+<ol><li>
+<p>Set up the Rails application to use the fake Iterable API:</p>
+</li></ol>
+
+<p>Add the following configuration to <code>config/application.rb</code>:</p>
+
+<p><code>ruby    # Add the middleware to the middleware stack    config.middleware.use FakeIterableApi </code></p>
+<ol><li>
+<p>Configure the routes for the fake Iterable API:</p>
+</li></ol>
+
+<p>Define routes in <code>config/routes.rb</code>:</p>
+
+<p>“‘ruby Rails.application.routes.draw do # post ’/events/track_event’, to: ‘events#track_event’ root ‘events#index’</p>
+
+<pre class="code ruby"><code class="ruby"> <span class='comment'># Route for the create_event action in the EventsController
+</span> <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/events/create_event</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>to:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>events#create_event</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>end “‘</p>
+<ol><li>
+<p>Run the Rails server:</p>
+</li></ol>
+
+<p><code>   rails server </code></p>
+
+<h3 id="label-Using+the+Iterable+API+Mock">Using the Iterable API Mock</h3>
+
+<p>The mock Iterable API provides endpoints to track events. You can use these endpoints to simulate event tracking behavior.</p>
+
+<h4 id="label-Tracking+Events">Tracking Events</h4>
+<ul><li>
+<p><strong>Endpoint</strong>: <code>POST /api/events/track</code></p>
+</li><li>
+<p><strong>Parameters</strong>:</p>
+</li><li>
+<p><code>eventName</code>: The name of the event to track (e.g., “Event A”, “Event B”).</p>
+</li><li>
+<p><code>userId</code>: The ID of the user associated with the event.</p>
+</li><li>
+<p><code>email</code>: The email id of the user.</p>
+</li><li>
+<p><code>apiKey</code>: The api key to access endpoint.</p>
+</li><li>
+<p><strong>Response</strong>: Returns a JSON response indicating the success or failure of the event tracking operation.</p>
+</li></ul>
+
+<p>Example request:</p>
+
+<pre class="code ruby"><code class="ruby">curl -X POST \
+  http://localhost:3000/api/events/track \
+  -H &#39;Content-Type: application/json&#39; \
+  -d &#39;{
+    &quot;eventName&quot;: &quot;Event A&quot;,
+    &quot;userId&quot;: &quot;user123&quot;,
+    &quot;email&quot;: &quot;user@example.com&quot;,
+    &quot;apiKey&quot;: &quot;valid_api_key&quot;
+  }&#39;
+</code></pre>
+
+<p>Example response:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='lbrace'>{</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>message</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Event A tracked successfully!</span><span class='tstring_end'>&quot;</span></span>
+<span class='rbrace'>}</span>
+</code></pre>
+
+<h2 id="label-Contributing">Contributing</h2>
+
+<p>Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.</p>
+
+<h2 id="label-License">License</h2>
+
+<p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
+<hr>
+
+<p>Feel free to customize the README to include any additional information or instructions specific to your application.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Mon Feb 12 13:14:19 2024 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.34 (ruby-3.1.0).
+</div>
+
+    </div>
+  </body>
+</html>

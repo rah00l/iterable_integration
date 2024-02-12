@@ -1,0 +1,3 @@
+--title "Iterable API Mock Documentation"
+--exclude 'vendor' 'tmp' 'node_modules'
+--markup markdown
