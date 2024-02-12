@@ -3,7 +3,7 @@
 
 This application serves as a mock for the Iterable API, allowing developers to simulate interactions with the Iterable platform without making actual requests to the Iterable servers. # My Project
 
-This README provides an overview of the project, but you can find more detailed documentation in the [YARD documentation](doc/index.html).
+This README provides an overview of the project, but you can find more detailed documentation in the [project's wiki](https://github.com/rah00l/iterable_integration/wiki) or [YARD documentation](doc/index.html). 
 
 ## Installation
 
