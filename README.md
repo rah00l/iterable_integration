@@ -5,9 +5,9 @@ This application serves as a mock for the Iterable API, allowing developers to s
 
 This README provides an overview of the project, but you can find more detailed documentation in the [project's wiki](https://github.com/rah00l/iterable_integration/wiki) or [YARD documentation](doc/index.html). 
 
-## Installation
+## Live Demo
 
-...
+<a href="https://github.com/rah00l/iterable_integration"><img src="app/assets/images/iterable_integration.gif"></a>
 
 
 ## Usage
