@@ -92,6 +92,14 @@ Example response:
 }
 ```
 
+## Testing with Fake Iterable API Server
+
+I've added test cases to ensure the reliability of the Fake Iterable API Server. These tests cover various scenarios, including successful event tracking and error handling for invalid requests.
+
+### Current Status
+
+![Iterable Integration Status](app/assets/images/iterable_integration_specs.png)
+
 ## Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
